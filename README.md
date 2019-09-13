@@ -1,10 +1,10 @@
 # PasteMeJavaBackend
 
-PasteMe Bakcend Written by Java
+PasteMe Backend written by Java
 
 # Technology Stack
 
-Java, Maven, Mybatis, Spring Boot, MySQL
+Java, Maven, Spring Boot, MySQL, Mybatis
 
 # API
 
