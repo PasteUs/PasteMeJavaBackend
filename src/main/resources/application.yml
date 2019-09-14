@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://frps.lucien.ink:13306/pasteme # Java Database Connector
+    url: jdbc:mysql://frps.lucien.ink:3306/pasteme # Java Database Connector
     username: username
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
