@@ -2,6 +2,7 @@ package cn.pasteme.backend.controller;
 
 import org.jboss.logging.Cause;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
@@ -56,9 +57,6 @@ public class PermanentController {
                         map.put("status", "success");
                         map.put("lang", permanent.getLang());
                         map.put("content", permanent.getContent());
-                    } else {
-                        map.put("status", "401");
-                        map.put("error", "password is wrong");
                     }
                 } else {
                     map.put("status", "success");
@@ -74,15 +72,13 @@ public class PermanentController {
                         map.put("status", "success");
                         map.put("lang", temporary.getLang());
                         map.put("content", temporary.getContent());
-                    } else {
-                        map.put("status", "401");
-                        map.put("error", "password is wrong");
                     }
                 } else {
                     map.put("status", "success");
                     map.put("lang", temporary.getLang());
                     map.put("content", temporary.getContent());
                 }
+                mapper.deleteTemporary(temporary.getKey());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,19 +96,75 @@ public class PermanentController {
         try {
             if (mapper.isExit(key).equals(0)) {
                 temporary.setKey(key);
-                if(temporary.getPassword() != null && !temporary.getPassword().equals("")){
+                if (temporary.getPassword() != null && !temporary.getPassword().equals("")) {
                     temporary.setPassword(util.getMD5Str(temporary.getPassword()));
                 }
                 String ip = util.GetIPAddress(httpServletRequest);
                 temporary.setClientIp(ip);
                 temporary.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
-                mapper.insert(temporary);
-                map.put("status","success");
-                map.put("key",temporary.getKey());
+                mapper.insertTemporary(temporary);
+                map.put("status", "success");
+                map.put("key", temporary.getKey());
+            }
+            else {
+                map.put("status", "401");
+                map.put("error", "unauthorized");
+                map.put("messsge", "Index already exists");
             }
         } catch (Exception e) {
             e.printStackTrace();
+            map.put("status", "401");
+            map.put("error", "unauthorized");
+            map.put("messsge", e.toString());
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public Map<String, String> postPastePermanent(@RequestBody Permanent permanent, HttpServletRequest httpServletRequest) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            if (permanent.getPassword() != null && !permanent.getPassword().equals("")) {
+                permanent.setPassword(util.getMD5Str(permanent.getPassword()));
+            }
+                String ip = util.GetIPAddress(httpServletRequest);
+                permanent.setClientIp(ip);
+                permanent.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+                mapper.insertPermanent(permanent);
+                map.put("status", "success");
+                map.put("key", permanent.getKey());
+
+        } catch (Exception e) {
+            map.put("status", "401");
+            map.put("error", "unauthorized");
+            map.put("message", e.toString());
+
+        }
+        return map;
+    }
+
+    @RequestMapping(value="/once",method = RequestMethod.POST)
+    public Map<String,String> postPasteTemporary(@RequestBody Temporary temporary,HttpServletRequest httpServletRequest){
+        Map<String,String> map = new HashMap<>();
+        try{
+            String randString = util.getRandomString(8);
+            temporary.setKey(randString);
+            if(temporary.getPassword() != null && !temporary.getPassword().equals("")){
+                temporary.setPassword(util.getMD5Str(temporary.getPassword()));
+            }
+            String ip = util.GetIPAddress(httpServletRequest);
+            temporary.setClientIp(ip);
+            temporary.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+            mapper.insertTemporary(temporary);
+            map.put("status", "success");
+            map.put("key", temporary.getKey());
+        }catch (Exception e){
+            map.put("status","401");
+            map.put("error","unauthorized");
+            map.put("message",e.toString());
         }
         return map;
     }
 }
+
+
