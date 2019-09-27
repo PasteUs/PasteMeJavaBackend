@@ -105,8 +105,7 @@ public class PermanentController {
                 mapper.insertTemporary(temporary);
                 map.put("status", "success");
                 map.put("key", temporary.getKey());
-            }
-            else {
+            } else {
                 map.put("status", "401");
                 map.put("error", "unauthorized");
                 map.put("messsge", "Index already exists");
@@ -127,12 +126,12 @@ public class PermanentController {
             if (permanent.getPassword() != null && !permanent.getPassword().equals("")) {
                 permanent.setPassword(util.getMD5Str(permanent.getPassword()));
             }
-                String ip = util.GetIPAddress(httpServletRequest);
-                permanent.setClientIp(ip);
-                permanent.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
-                mapper.insertPermanent(permanent);
-                map.put("status", "success");
-                map.put("key", permanent.getKey());
+            String ip = util.GetIPAddress(httpServletRequest);
+            permanent.setClientIp(ip);
+            permanent.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+            mapper.insertPermanent(permanent);
+            map.put("status", "success");
+            map.put("key", permanent.getKey());
 
         } catch (Exception e) {
             map.put("status", "401");
@@ -143,13 +142,13 @@ public class PermanentController {
         return map;
     }
 
-    @RequestMapping(value="/once",method = RequestMethod.POST)
-    public Map<String,String> postPasteTemporary(@RequestBody Temporary temporary,HttpServletRequest httpServletRequest){
-        Map<String,String> map = new HashMap<>();
-        try{
+    @RequestMapping(value = "/once", method = RequestMethod.POST)
+    public Map<String, String> postPasteTemporary(@RequestBody Temporary temporary, HttpServletRequest httpServletRequest) {
+        Map<String, String> map = new HashMap<>();
+        try {
             String randString = util.getRandomString(8);
             temporary.setKey(randString);
-            if(temporary.getPassword() != null && !temporary.getPassword().equals("")){
+            if (temporary.getPassword() != null && !temporary.getPassword().equals("")) {
                 temporary.setPassword(util.getMD5Str(temporary.getPassword()));
             }
             String ip = util.GetIPAddress(httpServletRequest);
@@ -158,10 +157,10 @@ public class PermanentController {
             mapper.insertTemporary(temporary);
             map.put("status", "success");
             map.put("key", temporary.getKey());
-        }catch (Exception e){
-            map.put("status","401");
-            map.put("error","unauthorized");
-            map.put("message",e.toString());
+        } catch (Exception e) {
+            map.put("status", "401");
+            map.put("error", "unauthorized");
+            map.put("message", e.toString());
         }
         return map;
     }

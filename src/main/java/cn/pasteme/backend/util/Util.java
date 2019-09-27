@@ -22,27 +22,29 @@ public class Util {
             throw new Exception("MD5加密出现错误，" + e.toString());
         }
     }
+
     public String GetIPAddress(HttpServletRequest request) {
         try {
-            String remoteAddress="";
+            String remoteAddress = "";
             if (request != null) {
                 remoteAddress = request.getHeader("X-Forwarded-For");
                 if (remoteAddress == null || "".equals(remoteAddress)) {
                     remoteAddress = request.getRemoteAddr();
                 }
             }
-            remoteAddress=remoteAddress!=null && remoteAddress.contains(",")? remoteAddress.split(",")[0]: remoteAddress;
+            remoteAddress = remoteAddress != null && remoteAddress.contains(",") ? remoteAddress.split(",")[0] : remoteAddress;
             return remoteAddress;
         } catch (Exception e) {
             return null;
         }
     }
-    public String getRandomString(int length){
-        String str="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random=new Random();
-        StringBuffer sb=new StringBuffer();
-        for(int i=0;i<length;i++){
-            int number=random.nextInt(62);
+
+    public String getRandomString(int length) {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(62);
             sb.append(str.charAt(number));
         }
         return sb.toString();
