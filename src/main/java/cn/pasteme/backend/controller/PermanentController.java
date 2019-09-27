@@ -17,6 +17,7 @@ import cn.pasteme.backend.util.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping(value = "v1.0.1")
 public class PermanentController {
     private final myMapper mapper;
 
