@@ -22,8 +22,14 @@ public class Controller {
 
     private final Util util;
 
-    public Controller(Util util) {
+    private final Permanent permanent;
+
+    private final Temporary temporary;
+
+    public Controller(Util util, Permanent permanent, Temporary temporary) {
         this.util = util;
+        this.permanent = permanent;
+        this.temporary = temporary;
     }
 
     @RequestMapping(value = "/{token}", method = RequestMethod.GET)
@@ -37,7 +43,7 @@ public class Controller {
 
         try {
             boolean isNum = key.matches("[0-9]+");
-            paste = isNum ? new Permanent().get(key) : new Temporary().get(key);;
+            paste = isNum ? permanent.get(key) : temporary.get(key);;
 
             // 用户是否有访问此 Paste 的权限
             boolean accessible = true;

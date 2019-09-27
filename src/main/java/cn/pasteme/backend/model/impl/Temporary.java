@@ -4,11 +4,13 @@ import cn.pasteme.backend.model.Paste;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Lucien on 2019/9/27.
  */
 @Data
+@Service
 @EqualsAndHashCode(callSuper = true)
 public class Temporary extends Paste {
 
