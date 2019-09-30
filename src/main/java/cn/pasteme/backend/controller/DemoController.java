@@ -26,11 +26,11 @@ public class DemoController {
 
     @GetMapping("demo")
     public Result<ContentVO> demo(TokenDTO tokenDTO) {
-        if(tokenDTO==null || tokenDTO.getKey()==null) {
+        if (tokenDTO == null || tokenDTO.getKey() == null) {
             return Result.error(CodeMsg.PARAM_ERROR);
         }
         Optional<ContentVO> contentVO = Optional.of(demoService.getContentByKey(tokenDTO));
-        if(contentVO.filter(c -> c.getKey()==null).isPresent()) {
+        if (contentVO.filter(c -> c.getKey() == null).isPresent()) {
             return Result.error(CodeMsg.CONTENT_EMPTY);
         }
         return Result.success(contentVO.get());

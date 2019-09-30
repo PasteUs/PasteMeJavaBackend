@@ -7,8 +7,7 @@ import cn.pasteme.common.vo.ContentVO;
 import org.springframework.stereotype.Service;
 
 /**
- * @Author: 白振宇
- * @Date： 2019/9/30 0:42
+ * Created by 白振宇 2019/9/30 00:42
  */
 @Service
 public class DemoServiceImpl implements DemoService {
