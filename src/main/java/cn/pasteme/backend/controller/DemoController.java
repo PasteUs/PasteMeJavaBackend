@@ -1,8 +1,9 @@
 package cn.pasteme.backend.controller;
 
 import cn.pasteme.backend.service.DemoService;
+import cn.pasteme.common.annotation.RequestLogging;
 import cn.pasteme.common.dto.TokenDTO;
-import cn.pasteme.common.utils.Md5Util;
+import cn.pasteme.common.utils.Md5;
 import cn.pasteme.common.utils.result.CodeMsg;
 import cn.pasteme.common.utils.result.Result;
 import cn.pasteme.common.vo.ContentVO;
@@ -25,6 +26,7 @@ public class DemoController {
     }
 
     @GetMapping("demo")
+    @RequestLogging(withResponse = true)
     public Result<ContentVO> demo(TokenDTO tokenDTO) {
         if (tokenDTO == null || tokenDTO.getKey() == null) {
             return Result.error(CodeMsg.PARAM_ERROR);
