@@ -10,8 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @date 2019/9/30 00:42
  */
 @SpringBootApplication
-@ComponentScan({"cn.pasteme.backend", "cn.pasteme.common"})
-@MapperScan({"cn.pasteme.common"})
+@ComponentScan("cn.pasteme.*")
 public class BackendApplication {
 
     public static void main(String[] args) {
