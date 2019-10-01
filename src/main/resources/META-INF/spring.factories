@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.pasteme.backend.BackendAutoConfiguration,\
+  cn.pasteme.backend.BackendDatasourceConfig
