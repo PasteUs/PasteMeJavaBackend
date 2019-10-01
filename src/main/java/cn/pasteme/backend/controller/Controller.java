@@ -1,6 +1,7 @@
 package cn.pasteme.backend.controller;
 
 import cn.pasteme.backend.service.PasteService;
+import cn.pasteme.common.annotation.RequestLogging;
 import cn.pasteme.common.dto.PasteDTO;
 import cn.pasteme.common.utils.Checker;
 import cn.pasteme.common.utils.Util;
@@ -41,6 +42,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/{token}", method = RequestMethod.GET)
+    @RequestLogging(withResponse = true)
     public Result<PasteDTO> get(@NotBlank @PathVariable String token) {
         try {
             @NotBlank String key = util.token2Key(token);
@@ -56,6 +58,7 @@ public class Controller {
     }
 
     @RequestMapping(value = {"/", "/once"}, method = RequestMethod.POST)
+    @RequestLogging(withResponse = true)
     public Result<String> createPermanent(@Valid @RequestBody PasteDTO pasteDTO,
                                           HttpServletRequest httpServletRequest) {
         try {
@@ -67,6 +70,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/{key}", method = RequestMethod.PUT)
+    @RequestLogging(withResponse = true)
     public Result<String> putTemporary(@Valid @PathVariable String key, @Valid @RequestBody PasteDTO pasteDTO,
                                        HttpServletRequest httpServletRequest) {
         try {
