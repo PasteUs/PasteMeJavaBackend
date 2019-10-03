@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
  * @date 2019/10/01 17:16
  */
 @Slf4j
-@RestController
+// @RestController
 @RequestMapping(value = "/1.0.0")
 public class Controller {
 
