@@ -2,10 +2,11 @@ package cn.pasteme.backend.controller;
 
 import cn.pasteme.backend.service.PasteService;
 import cn.pasteme.common.annotation.RequestLogging;
-import cn.pasteme.common.dto.PasteDTO;
+import cn.pasteme.common.dto.PasteRequestDTO;
+import cn.pasteme.common.dto.PasteResponseDTO;
 import cn.pasteme.common.utils.Checker;
 import cn.pasteme.common.utils.Util;
-import cn.pasteme.common.utils.result.Result;
+import cn.pasteme.common.utils.result.Response;
 import cn.pasteme.common.utils.result.CodeMessage;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,15 +26,15 @@ import javax.validation.constraints.NotNull;
  * @date 2019/10/01 17:16
  */
 @Slf4j
-// @RestController
+ @RestController
 @RequestMapping(value = "/1.0.0")
 public class Controller {
 
-    private PasteService pasteService;
+    private final PasteService pasteService;
 
-    private Checker checker;
+    private final Checker checker;
 
-    private Util util;
+    private final Util util;
 
     public Controller(PasteService pasteService, Checker checker, Util util) {
         this.pasteService = pasteService;
@@ -43,42 +44,59 @@ public class Controller {
 
     @RequestMapping(value = "/{token}", method = RequestMethod.GET)
     @RequestLogging(withResponse = true)
-    public Result<PasteDTO> get(@NotBlank @PathVariable String token) {
+    public Response<PasteResponseDTO> get(@NotBlank @PathVariable String token) {
         try {
             @NotBlank String key = util.token2Key(token);
             if (checker.isValid(key)) {
                 @NotNull String password = util.token2Password(token);
-                return pasteService.get(key, password);
+                PasteRequestDTO pasteRequestDTO = new PasteRequestDTO(key, password);
+                return pasteService.get(pasteRequestDTO);
             }
-            return Result.error(CodeMessage.PARAM_ERROR);
+            return Response.error(CodeMessage.PARAM_ERROR);
         } catch (Exception e) {
             log.error("token = {}, exception = ", token, e);
-            return Result.error(CodeMessage.SERVER_ERROR);
+            return Response.error(CodeMessage.SERVER_ERROR);
         }
     }
 
-    @RequestMapping(value = {"/", "/once"}, method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     @RequestLogging(withResponse = true)
-    public Result<String> createPermanent(@Valid @RequestBody PasteDTO pasteDTO,
+    public Response<String> createPermanent(@Valid @RequestBody PasteRequestDTO pasteRequestDTO,
                                           HttpServletRequest httpServletRequest) {
         try {
-            return Result.success(pasteService.create(pasteDTO, httpServletRequest));
+            pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
+            return Response.success(pasteService.createPermanent(pasteRequestDTO));
         } catch (Exception e) {
-            log.error("pasteDTO = {}, exception = ", pasteDTO, e);
-            return Result.error(CodeMessage.SERVER_ERROR);
+            log.error("pasteDTO = {}, exception = ", pasteRequestDTO, e);
+            return Response.error(CodeMessage.SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/once", method = RequestMethod.POST)
+    @RequestLogging(withResponse = true)
+    public Response<String> createTemporary(@Valid @RequestBody PasteRequestDTO pasteRequestDTO,
+                                            HttpServletRequest httpServletRequest) {
+        try {
+            pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
+            return Response.success(pasteService.createTemporary(pasteRequestDTO));
+        } catch (Exception e) {
+            log.error("pasteDTO = {}, exception = ", pasteRequestDTO, e);
+            return Response.error(CodeMessage.SERVER_ERROR);
         }
     }
 
     @RequestMapping(value = "/{key}", method = RequestMethod.PUT)
     @RequestLogging(withResponse = true)
-    public Result<String> putTemporary(@Valid @PathVariable String key, @Valid @RequestBody PasteDTO pasteDTO,
+    public Response<String> putTemporary(@Valid @PathVariable String key, @Valid @RequestBody PasteRequestDTO pasteRequestDTO,
                                        HttpServletRequest httpServletRequest) {
         try {
-            return checker.isValid(key) ? Result.success(pasteService.create(key, pasteDTO, httpServletRequest))
-                                        : Result.error(CodeMessage.PARAM_ERROR);
+            pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
+            pasteRequestDTO.setKey(key);
+            return checker.isValid(key) ? Response.success(pasteService.createTemporary(pasteRequestDTO))
+                                        : Response.error(CodeMessage.PARAM_ERROR);
         } catch (Exception e) {
-            log.error("pasteDTO = {}, exception = ", pasteDTO, e);
-            return Result.error(CodeMessage.SERVER_ERROR);
+            log.error("pasteDTO = {}, exception = ", pasteRequestDTO, e);
+            return Response.error(CodeMessage.SERVER_ERROR);
         }
     }
 }
