@@ -1,25 +1,25 @@
 package cn.pasteme.backend.service;
 
-import cn.pasteme.common.dto.PasteDTO;
-import cn.pasteme.common.utils.result.Result;
+import cn.pasteme.common.dto.PasteRequestDTO;
+import cn.pasteme.common.dto.PasteResponseDTO;
+import cn.pasteme.common.utils.result.Response;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Lucien
  * @date 2019/10/01 17:16
+ * 暂时加一个注解，否则 Controller 的 Bean 会报错
  */
 @Service
 public interface PasteService {
 
     /**
      * 通过 key 和 password 得到 DTO
-     * @param key 保证长度属于 [3, 8]，非数字 0 开头
-     * @param password 密码
+     * 需要判断 key 的类别
+     * @param pasteRequestDTO key + password
      * @return DTO
      */
-    Result<PasteDTO> get(String key, String password);
+    Response<PasteResponseDTO> get(PasteRequestDTO pasteRequestDTO);
 
     /**
      * 删除 key 对应的 Paste
@@ -30,19 +30,16 @@ public interface PasteService {
 
     /**
      * 创建一个由系统生成 key 的 record
-     * path / 对应 Permanent，path /once 对应 Temporary
      * @param pasteDTO DTO
-     * @param httpServletRequest Http Context
      * @return key
      */
-    String create(PasteDTO pasteDTO, HttpServletRequest httpServletRequest);
+    String createPermanent(PasteRequestDTO pasteDTO);
 
     /**
-     * 创建一个自定义 key 的 Temporary record
-     * @param key 从 path 中拿到的 key
+     * 创建一个随机/自定义 key 的 Temporary record
+     * 如果有 key 则创建自定义，无 key 则创建随机的
      * @param pasteDTO DTO
-     * @param httpServletRequest Http Context
      * @return key
      */
-    String create(String key, PasteDTO pasteDTO, HttpServletRequest httpServletRequest);
+    String createTemporary(PasteRequestDTO pasteDTO);
 }
