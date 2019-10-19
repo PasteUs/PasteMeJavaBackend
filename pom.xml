@@ -5,10 +5,10 @@
     <parent>
         <groupId>cn.pasteme</groupId>
         <artifactId>pasteme-root</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>pasteme-backend</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>pasteme-backend</name>
     <description>PasteMe Backend</description>
 
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>cn.pasteme</groupId>
             <artifactId>pasteme-common</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>1.0.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -37,7 +37,7 @@
     <repositories>
         <repository>
             <id>github-repo</id>
-            <url>https://raw.githubusercontent.com/PasteUs/MavenRepository/master</url>
+            <url>https://cdn.jsdelivr.net/gh/PasteUs/MavenRepository@latest</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
