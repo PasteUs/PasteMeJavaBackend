@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author Lucien
- * @version 1.0.0
- * 暂时加一个注解，否则 Controller 的 Bean 会报错
+ * @version 1.0.1
  */
-@Service
 public interface PasteService {
 
     /**

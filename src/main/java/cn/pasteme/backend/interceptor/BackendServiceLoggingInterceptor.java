@@ -16,7 +16,7 @@ import org.springframework.core.annotation.Order;
 @EnableAspectJAutoProxy
 @Aspect
 @Order(2)
-public class ServiceLoggingInterceptor {
+public class BackendServiceLoggingInterceptor {
     @Around("@annotation(logging)")
     public Object exceptionInterceptor(ProceedingJoinPoint joinPoint, RequestLogging logging) throws Throwable {
         return new cn.pasteme.common.service.ServiceLoggingInterceptor().invoke(joinPoint, logging);

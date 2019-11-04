@@ -7,7 +7,7 @@ import cn.pasteme.common.dto.PasteResponseDTO;
 import cn.pasteme.common.utils.Checker;
 import cn.pasteme.common.utils.Util;
 import cn.pasteme.common.utils.result.Response;
-import cn.pasteme.common.utils.result.CodeMessage;
+import cn.pasteme.common.utils.result.ResponseCode;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +23,11 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author Lucien
- * @version 1.0.0
+ * @version 1.0.1
  */
 @Slf4j
- @RestController
-@RequestMapping(value = "/1.0.0")
+@RestController
+@RequestMapping(value = "/1.0.1")
 public class Controller {
 
     private final PasteService pasteService;
@@ -52,10 +52,10 @@ public class Controller {
                 PasteRequestDTO pasteRequestDTO = new PasteRequestDTO(key, password);
                 return pasteService.get(pasteRequestDTO);
             }
-            return Response.error(CodeMessage.PARAM_ERROR);
+            return Response.error(ResponseCode.PARAM_ERROR);
         } catch (Exception e) {
             log.error("token = {}, exception = ", token, e);
-            return Response.error(CodeMessage.SERVER_ERROR);
+            return Response.error(ResponseCode.SERVER_ERROR);
         }
     }
 
@@ -68,7 +68,7 @@ public class Controller {
             return Response.success(pasteService.createPermanent(pasteRequestDTO));
         } catch (Exception e) {
             log.error("pasteDTO = {}, exception = ", pasteRequestDTO, e);
-            return Response.error(CodeMessage.SERVER_ERROR);
+            return Response.error(ResponseCode.SERVER_ERROR);
         }
     }
 
@@ -81,7 +81,7 @@ public class Controller {
             return Response.success(pasteService.createTemporary(pasteRequestDTO));
         } catch (Exception e) {
             log.error("pasteDTO = {}, exception = ", pasteRequestDTO, e);
-            return Response.error(CodeMessage.SERVER_ERROR);
+            return Response.error(ResponseCode.SERVER_ERROR);
         }
     }
 
@@ -93,10 +93,10 @@ public class Controller {
             pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
             pasteRequestDTO.setKey(key);
             return checker.isValid(key) ? Response.success(pasteService.createTemporary(pasteRequestDTO))
-                                        : Response.error(CodeMessage.PARAM_ERROR);
+                                        : Response.error(ResponseCode.PARAM_ERROR);
         } catch (Exception e) {
             log.error("pasteDTO = {}, exception = ", pasteRequestDTO, e);
-            return Response.error(CodeMessage.SERVER_ERROR);
+            return Response.error(ResponseCode.SERVER_ERROR);
         }
     }
 }
