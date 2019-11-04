@@ -10,7 +10,7 @@ import org.springframework.core.annotation.Order;
 
 /**
  * @author Ryan Lee
- * @date 2019/10/01 18:05
+ * @version 1.0.0
  */
 @Configuration
 @EnableAspectJAutoProxy

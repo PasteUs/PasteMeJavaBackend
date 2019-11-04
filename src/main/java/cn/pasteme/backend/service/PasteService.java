@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author Lucien
- * @date 2019/10/01 17:16
+ * @version 1.0.0
  * 暂时加一个注解，否则 Controller 的 Bean 会报错
  */
 @Service
