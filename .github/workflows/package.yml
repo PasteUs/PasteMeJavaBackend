@@ -1,13 +1,21 @@
 name: Maven Package
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   package:
+    name: Package with JDK ${{ matrix.jdk_version }} and mysql ${{ matrix.mysql_version }}
+
+    strategy:
+      matrix:
+        jdk_version: [11, 12, 13]
+        mvn_action: [package]
+        mysql_version: [5.5, 5.7, 8]
+        os: [ubuntu-latest]
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:${{ matrix.mysql_version }}
         env:
           MYSQL_USER: username
           MYSQL_PASSWORD: password
@@ -17,16 +25,18 @@ jobs:
           - 4399:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v1
-      - name: Set up JDK 11
+
+      - name: Set up JDK ${{ matrix.jdk_version }}
         uses: actions/setup-java@v1
         with:
-          java-version: 11
-      - name: Maven package
+          java-version: ${{ matrix.jdk_version }}
+
+      - name: Maven ${{ matrix.mvn_action }}
         run: |
           mvn --file pom.xml \
-              -Dspring.config.location=${PWD}/.github/application.yml \
-              package
+              -Dspring.config.location=src/main/resources/application.example.yml \
+              ${{ matrix.mvn_action }}

@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    if: github.repository == 'PasteUs/PasteMeJavaBackend'
 
     services:
       mysql:
@@ -33,7 +34,7 @@ jobs:
           GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
           GITHUB_PASSWORD: ${{ secrets.GITHUB_PASSWORD }}
         run: |
-          mvn --settings settings.xml \
+          mvn --settings .github/settings.xml \
               --file pom.xml \
               -Dspring.config.location=${PWD}/.github/application.yml \
               deploy
