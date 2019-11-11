@@ -12,6 +12,7 @@ import org.springframework.core.annotation.Order;
  * @author Ryan Lee
  * @version 1.0.0
  */
+/*
 @Configuration
 @EnableAspectJAutoProxy
 @Aspect
@@ -22,3 +23,4 @@ public class BackendServiceLoggingInterceptor {
         return new cn.pasteme.common.service.ServiceLoggingInterceptor().invoke(joinPoint, logging);
     }
 }
+ */
