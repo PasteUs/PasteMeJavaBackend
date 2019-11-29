@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author Lucien
- * @version 1.0.1
+ * @version 1.0.2
  */
 public interface PasteService {
 
@@ -30,8 +30,9 @@ public interface PasteService {
      * 创建一个由系统生成 key 的 record
      * @param pasteDTO DTO
      * @return key
+     * @throws Exception 创建失败异常
      */
-    String createPermanent(PasteRequestDTO pasteDTO);
+    String createPermanent(PasteRequestDTO pasteDTO) throws Exception;
 
     /**
      * 创建一个随机/自定义 key 的 Temporary record
@@ -39,5 +40,5 @@ public interface PasteService {
      * @param pasteDTO DTO
      * @return key
      */
-    String createTemporary(PasteRequestDTO pasteDTO);
+    String createTemporary(PasteRequestDTO pasteDTO) throws Exception;
 }

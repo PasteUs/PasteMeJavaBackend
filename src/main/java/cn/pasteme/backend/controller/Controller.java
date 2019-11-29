@@ -24,12 +24,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Lucien
- * @version 1.0.2
+ * @author Lucien, Moyu
+ * @version 1.0.3
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/1.0.2")
+@RequestMapping(value = "/1.0.3")
 public class Controller {
 
     private final PasteService pasteService;
@@ -61,7 +61,7 @@ public class Controller {
     @RequestLogging(withResponse = true)
     @ErrorLogging
     public Response<String> createPermanent(@Valid @RequestBody PasteRequestDTO pasteRequestDTO,
-                                          HttpServletRequest httpServletRequest) {
+                                          HttpServletRequest httpServletRequest) throws Exception {
         pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
         return Response.success(pasteService.createPermanent(pasteRequestDTO));
     }
@@ -70,7 +70,7 @@ public class Controller {
     @RequestLogging(withResponse = true)
     @ErrorLogging
     public Response<String> createTemporary(@Valid @RequestBody PasteRequestDTO pasteRequestDTO,
-                                            HttpServletRequest httpServletRequest) {
+                                            HttpServletRequest httpServletRequest) throws Exception {
         pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
         return Response.success(pasteService.createTemporary(pasteRequestDTO));
     }
@@ -79,7 +79,7 @@ public class Controller {
     @RequestLogging(withResponse = true)
     @ErrorLogging
     public Response<String> putTemporary(@Valid @PathVariable String key, @Valid @RequestBody PasteRequestDTO pasteRequestDTO,
-                                       HttpServletRequest httpServletRequest) {
+                                       HttpServletRequest httpServletRequest) throws Exception {
         pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
         pasteRequestDTO.setKey(key);
         return checker.isValid(key) ? Response.success(pasteService.createTemporary(pasteRequestDTO))
