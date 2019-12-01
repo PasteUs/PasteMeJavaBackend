@@ -5,7 +5,6 @@ import cn.pasteme.backend.exception.ManipulationException;
 import cn.pasteme.common.dto.PasteRequestDTO;
 import cn.pasteme.common.dto.PasteResponseDTO;
 import cn.pasteme.common.utils.result.Response;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Lucien

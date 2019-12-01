@@ -8,7 +8,6 @@ import cn.pasteme.common.dto.PasteRequestDTO;
 import cn.pasteme.common.dto.PasteResponseDTO;
 import cn.pasteme.common.manager.PermanentManager;
 import cn.pasteme.common.manager.TemporaryManager;
-import cn.pasteme.common.utils.Checker;
 import cn.pasteme.backend.util.TempKeyGenerator;
 import cn.pasteme.common.utils.result.Response;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,7 +6,7 @@ import cn.pasteme.common.utils.result.ResponseCode;
  * @author Moyu
  * @version 1.0.0
  */
-public class DuplicateException extends PasteException {
+public class DuplicateException extends RuntimeException {
     private ResponseCode responseCode;
 
     public DuplicateException(ResponseCode responseCode) {

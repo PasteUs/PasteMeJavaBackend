@@ -6,7 +6,7 @@ import cn.pasteme.common.utils.result.ResponseCode;
  * @author Moyu
  * @version 1.0.0
  */
-public class ManipulationException extends PasteException {
+public class ManipulationException extends RuntimeException {
     private ResponseCode responseCode;
 
     public ManipulationException(ResponseCode responseCode) {
