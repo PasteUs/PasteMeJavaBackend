@@ -7,7 +7,7 @@ import cn.pasteme.common.dto.PasteResponseDTO;
 import cn.pasteme.common.manager.PermanentManager;
 import cn.pasteme.common.manager.TemporaryManager;
 import cn.pasteme.common.utils.Checker;
-import cn.pasteme.common.utils.TempKeyGenerator;
+import cn.pasteme.backend.util.TempKeyGenerator;
 import cn.pasteme.common.utils.result.Response;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +65,7 @@ public class PasteServiceImpl implements PasteService {
 
             while (flag && times > 0) {
                 times --;
-                key = TempKeyGenerator.generator();
+                key = TempKeyGenerator.generator(TempKeyGenerator.CURRENT_LENGTH);
                 if (temporaryManager.countByKey(key).getData() == 0) {
                     flag = false;
                 }
