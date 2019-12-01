@@ -5,9 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
+    url: jdbc:mysql://localhost:4399/pasteme
+    username: username
+    password: password
 
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*Mapper.xml
