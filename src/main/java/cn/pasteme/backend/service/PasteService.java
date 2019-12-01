@@ -39,6 +39,7 @@ public interface PasteService {
      * 如果有 key 则创建自定义，无 key 则创建随机的
      * @param pasteDTO DTO
      * @return key
+     * @throws Exception 创建失败异常
      */
     String createTemporary(PasteRequestDTO pasteDTO) throws Exception;
 }
