@@ -1,5 +1,8 @@
 package cn.pasteme.backend.controller;
 
+import cn.pasteme.backend.exception.DuplicateException;
+import cn.pasteme.backend.exception.ManipulationException;
+import cn.pasteme.backend.exception.ParamErrorException;
 import cn.pasteme.backend.service.PasteService;
 import cn.pasteme.common.annotation.ErrorLogging;
 import cn.pasteme.common.annotation.RequestLogging;
@@ -24,7 +27,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Lucien, Moyu
+ * @author Moyu, Lucien
  * @version 1.0.3
  */
 @Slf4j
@@ -47,12 +50,18 @@ public class Controller {
     @RequestMapping(value = "/{token}", method = RequestMethod.GET)
     @RequestLogging(withResponse = true)
     @ErrorLogging
-    public Response<PasteResponseDTO> get(@NotBlank @PathVariable String token) {
-        @NotBlank String key = util.token2Key(token);
-        if (!checker.isValid(key)) {
-            throw new GlobalException(ResponseCode.PARAM_ERROR);
+    public Response<PasteResponseDTO> get(@PathVariable String token) {
+        if (token == null || token.isBlank()) {
+            return Response.error(ResponseCode.PARAM_ERROR);
         }
-        @NotNull String password = util.token2Password(token);
+        String key = util.token2Key(token);
+        if (!checker.isValid(key)) {
+            throw new ParamErrorException(ResponseCode.PARAM_ERROR);
+        }
+        String password = util.token2Password(token);
+        if (password == null) {
+            return Response.error(ResponseCode.PARAM_ERROR);
+        }
         PasteRequestDTO pasteRequestDTO = new PasteRequestDTO(key, password);
         return pasteService.get(pasteRequestDTO);
     }
@@ -61,7 +70,7 @@ public class Controller {
     @RequestLogging(withResponse = true)
     @ErrorLogging
     public Response<String> createPermanent(@Valid @RequestBody PasteRequestDTO pasteRequestDTO,
-                                          HttpServletRequest httpServletRequest) throws Exception {
+                                          HttpServletRequest httpServletRequest) throws ManipulationException {
         pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
         return Response.success(pasteService.createPermanent(pasteRequestDTO));
     }
@@ -70,7 +79,7 @@ public class Controller {
     @RequestLogging(withResponse = true)
     @ErrorLogging
     public Response<String> createTemporary(@Valid @RequestBody PasteRequestDTO pasteRequestDTO,
-                                            HttpServletRequest httpServletRequest) throws Exception {
+                                            HttpServletRequest httpServletRequest) throws ManipulationException {
         pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
         return Response.success(pasteService.createTemporary(pasteRequestDTO));
     }
@@ -79,7 +88,7 @@ public class Controller {
     @RequestLogging(withResponse = true)
     @ErrorLogging
     public Response<String> putTemporary(@Valid @PathVariable String key, @Valid @RequestBody PasteRequestDTO pasteRequestDTO,
-                                       HttpServletRequest httpServletRequest) throws Exception {
+                                       HttpServletRequest httpServletRequest) throws DuplicateException {
         pasteRequestDTO.setClientIp(httpServletRequest.getRemoteHost());
         pasteRequestDTO.setKey(key);
         return checker.isValid(key) ? Response.success(pasteService.createTemporary(pasteRequestDTO))

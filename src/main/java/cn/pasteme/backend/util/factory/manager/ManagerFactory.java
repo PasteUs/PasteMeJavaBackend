@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @version 1.0.0
  */
 @Component
-public class ManagerCreateFactory {
+public class ManagerFactory {
 
     private final PermanentManager permanentManager;
 
@@ -19,7 +19,7 @@ public class ManagerCreateFactory {
 
     private final Checker checker;
 
-    public ManagerCreateFactory(PermanentManager permanentManager, TemporaryManager temporaryManager, Checker checker) {
+    public ManagerFactory(PermanentManager permanentManager, TemporaryManager temporaryManager, Checker checker) {
         this.permanentManager = permanentManager;
         this.temporaryManager = temporaryManager;
         this.checker = checker;
