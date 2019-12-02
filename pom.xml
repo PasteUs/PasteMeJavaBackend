@@ -16,7 +16,7 @@
         <dependency>
             <groupId>cn.pasteme</groupId>
             <artifactId>pasteme-common</artifactId>
-            <version>1.0.5-SNAPSHOT</version>
+            <version>1.0.10-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
